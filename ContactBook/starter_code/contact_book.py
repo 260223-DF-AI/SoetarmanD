@@ -25,7 +25,7 @@ contacts = []
 # DONE: Task 1 - Create the Contact Book
 # =============================================================================
 
-def add_contact(contacts, name, phone, email, category):
+def add_contact(contacts: list, name: str, phone: str, email: str, category: str) -> dict:
     """
     Add a new contact to the contact book.
     
@@ -58,7 +58,7 @@ def add_contact(contacts, name, phone, email, category):
 # DONE: Task 2 - Display Contacts
 # =============================================================================
 
-def display_all_contacts(contacts):
+def display_all_contacts(contacts: list) -> None:
     """
     Display all contacts in a formatted table.
     
@@ -88,7 +88,7 @@ def display_all_contacts(contacts):
     print("=" * 50)
 
 
-def display_contact_details(contact):
+def display_contact_details(contact: dict) -> None:
     """
     Display detailed information for a single contact.
     
@@ -281,7 +281,7 @@ def main():
     # Use while True and break on exit choice
     display_menu()
     while (True):
-        choice = input()
+        choice = int(input())
         if (choice == 1):
             display_all_contacts(contacts)
         elif (choice == 2):
