@@ -330,12 +330,12 @@ class Shelter:
         # DONE: Filter self.animals by species
         list = []
         for animal in self.animals:
-            if animal.species == species:
+            if animal.species.lower() == species.lower():
                 list.append(animal)  # adds animal if matching the given species
         return list # return list of animals that match the given species
     
     def print_by_species(self, species): # function to print the animals by the given species
-        print(f"\n--- {self.name}'s {species}s ---")
+        print(f"\n--- {self.name}'s {species.lower()}s ---")
         list = self.list_by_species(species)
         for animal in list:
             print(f"  {animal}")
@@ -344,6 +344,7 @@ class Shelter:
         """Adopt an animal by name."""
         animal = self.find_by_name(name)
         if animal:
+            print(f"Successfully adopted: {animal}. Congratulations!")
             return animal.adopt()
         return f"No animal named {name} found."
     
@@ -371,6 +372,14 @@ class Shelter:
             "by_species": species_count
         }
     
+    def print_stats(self):
+        stats = self.get_statistics()
+        print(f"\n--- Shelter Statistics ---")
+        print(f"  Total: {stats['total']}")
+        print(f"  Available: {stats['available']}")
+        print(f"  Adopted: {stats['adopted']}")
+        print(f"  By Species: {stats['by_species']}")
+
     def display_all(self):
         """Display all animals."""
         print(f"\n{'='*50}")
@@ -383,7 +392,51 @@ class Shelter:
     def __str__(self):
         """String representation."""
         return f"Welcome to the {self.name}!"
+    
+    def menu(self):
+        """Menu for the shelter"""
+        # display menu options
+        print("=" * 50)
+        print(f"     1.) View all former and current animals from us")
+        print(f"     2.) View all animals available for adoption")
+        print(f"     3.) View animals by certain species")
+        print(f"     4.) Adopt an animal")
+        print(f"     5.) Make animals speak")
+        print(f"     6.) Get shelter statistics")
+        print(f"     0.) Exit")
+        print("=" * 50)
 
+    def interactive(self):
+        """Implementation for the interactive menu"""
+        print("=" * 50)
+        print(f"     {self}")
+        self.menu()
+        while (True):
+            choice = input("Please enter choice: ")
+            match choice:
+                case '0':     # exit
+                    print(f"Thank you for visiting the {self.name}!")
+                    break
+                case '1':     # view every animal from shelter
+                    self.display_all()
+                case '2':     # view available animals
+                    self.print_available()
+                case '3':     # view by species
+                    species = input("Please enter the species you want to list: ")
+                    self.print_by_species(species)
+                case '4':     # adopt an animal 
+                    name = input("Please enter the name of desired animal: ")
+                    self.adopt_animal(name)
+                case '5':     # make animals speak
+                    self.make_all_speak()
+                case '6':     # shelter statistics
+                    self.print_stats()
+                case _:     # invalid choice
+                    if input("Please enter a valid choice (0 - 7): ") == '0':   # exits with a goodbye message
+                        print(f"Thank you for visiting the {self.name}!")
+                        break
+            self.menu()     # display menu again after choice is made
+                
 
 # =============================================================================
 # Task 5: Demonstration
@@ -431,10 +484,14 @@ def main():
 
     # Testing functionality
     print()
+    print("=" * 40)
+    print("Testing")
     print(shelter.list_available()) # prints the list that has the different objects of the classes' addresses
     shelter.print_available()   # prints out the shelter's available animals for adoption
     print(shelter.list_by_species("Cat")) # prints the list that has the different objects of the classes' addresses
     shelter.print_by_species("Cat")  # prints out the shelter's cats/kittens
+
+    shelter.interactive()
 
 if __name__ == "__main__":
     main()
