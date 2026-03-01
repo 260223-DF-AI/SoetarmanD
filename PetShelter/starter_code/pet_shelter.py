@@ -62,9 +62,8 @@ class Animal:
         """String representation."""
         return f"{self.species}: {self.name} (Age: {self.age})"
 
-
 # =============================================================================
-# Task 2: Dog, Cat, and Bird Classes
+# Task 2: Dog, Cat, Bird, and Fish Classes
 # =============================================================================
 
 class Dog(Animal):
@@ -145,6 +144,7 @@ class Cat(Animal):
         """String representation"""
         return f"{self.name} - {self.color}: {self.age} year(s) old"
 
+
 class Bird(Animal):
     """A bird in the shelter"""
 
@@ -155,7 +155,7 @@ class Bird(Animal):
         Args:
             name: Bird's name
             age: Age in years
-            breed: Bird breed (e.g., "Golden Retriever")
+            breed: Bird breed (e.g., "Parrot")
             can_talk: Whether the bird can talk or not
         """
         super().__init__(name, age, "Bird")
@@ -181,6 +181,42 @@ class Bird(Animal):
         """String representation"""
         return f"{self.name} - {self.breed}: {self.age} year(s) old"
 
+class Fish(Animal):
+    """A fish in the shelter"""
+
+    def __init__(self, name, age, breed, friendly=False):
+        """
+        Initialize a fish.
+        
+        Args:
+            name: Fish's name
+            age: Age in years
+            breed: Fish breed (e.g., "Betta Fish")
+            friendly: True/False for if friendly with other fish
+        """
+        super().__init__(name, age, "Bird")
+        self.breed = breed
+        self.friendly = friendly
+
+    def speak(self):
+        """Fish go blub"""
+        return f"{self.name} blubs"
+        
+    def swim(self):
+        """Fish swim"""
+        return f"{self.name} swims around"
+    
+    def describe(self):
+        """Override to include breed and if it is friendly with other fish or not"""
+        base = super().describe()   # get base description
+        breed = self.breed
+        friendly = "put em together go crazy" if self.friendly else "keep em far far apart"
+        return f"{base} - {breed}, {friendly}"
+
+    def __str__(self):
+        """String representation"""
+        return f"{self.name} - {self.breed}: {self.age} year(s) old"
+    
 # =============================================================================
 # Task 3: Specialized Classes
 # =============================================================================
@@ -303,9 +339,9 @@ class Shelter:
     
     def find_by_name(self, name):
         """Find an animal by name."""
-        # DONE: Loop through animals and return one with matching name
+        # DONE: Loop through animals and return one with matching name (case insensitive)
         for animal in self.animals:
-            if animal.name == name:
+            if animal.name.lower() == name.lower():
                 return animal
         # DONE: Return None if not found
         return None # falling through the for loop means no animal with the given name
@@ -344,7 +380,6 @@ class Shelter:
         """Adopt an animal by name."""
         animal = self.find_by_name(name)
         if animal:
-            print(f"Successfully adopted: {animal}. Congratulations!")
             return animal.adopt()
         return f"No animal named {name} found."
     
@@ -426,7 +461,7 @@ class Shelter:
                     self.print_by_species(species)
                 case '4':     # adopt an animal 
                     name = input("Please enter the name of desired animal: ")
-                    self.adopt_animal(name)
+                    print(self.adopt_animal(name))
                 case '5':     # make animals speak
                     self.make_all_speak()
                 case '6':     # shelter statistics
@@ -437,12 +472,11 @@ class Shelter:
                         break
             self.menu()     # display menu again after choice is made
                 
-
 # =============================================================================
 # Task 5: Demonstration
 # =============================================================================
 
-def main():
+def test_functionality():
     """Demonstrate the pet shelter system."""
     
     # Create shelter
@@ -460,6 +494,8 @@ def main():
     shelter.add_animal(Kitten("da bb", 4, "Gray"))
     # Add a Bird
     shelter.add_animal(Bird("Dog", 5, "Parrot", True))
+    # Add a Fish
+    shelter.add_animal(Fish("Beta", 2, "Betta", False))
     
     # Display all animals
     shelter.display_all()
@@ -490,6 +526,24 @@ def main():
     shelter.print_available()   # prints out the shelter's available animals for adoption
     print(shelter.list_by_species("Cat")) # prints the list that has the different objects of the classes' addresses
     shelter.print_by_species("Cat")  # prints out the shelter's cats/kittens
+
+def main():
+    test_functionality()
+    shelter = Shelter("Happy Animal Rescue")
+
+    shelter.add_animal(Dog("Buddy", 3, "Golden Retriever", True))
+    # DONE: Add a Cat
+    shelter.add_animal(Cat("Whiskers", 1, "Orange Tabby", True))
+    # DONE: Add a Puppy
+    shelter.add_animal(Puppy("lil bb", 8, "Chihuahua"))
+    # DONE: Add a ServiceDog
+    shelter.add_animal(ServiceDog("Old boi", 10, "German Shepard", "guide"))
+    # DONE: Add a Kitten
+    shelter.add_animal(Kitten("da bb", 4, "Gray"))
+    # Add a Bird
+    shelter.add_animal(Bird("Dog", 5, "Parrot", True))
+    # Add a Fish
+    shelter.add_animal(Fish("Beta", 2, "Betta", False))
 
     shelter.interactive()
 
