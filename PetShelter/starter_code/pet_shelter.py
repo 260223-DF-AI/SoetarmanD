@@ -64,7 +64,7 @@ class Animal:
 
 
 # =============================================================================
-# Task 2: Dog and Cat Classes
+# Task 2: Dog, Cat, and Bird Classes
 # =============================================================================
 
 class Dog(Animal):
@@ -97,6 +97,10 @@ class Dog(Animal):
         base = super().describe()
         trained = "trained" if self.is_trained else "not trained"
         return f"{base} - {self.breed}, {trained}"
+    
+    def __str__(self):
+        """String representation"""
+        return f"{self.name} - {self.breed}: {self.age} years old"
 
 
 class Cat(Animal):
@@ -135,8 +139,47 @@ class Cat(Animal):
         # DONE: Add color and indoor/outdoor status
         color = self.color
         status = "indoor cat" if self.is_indoor else "outdoor cat"  # if true returns that it is an indoor cat, otherwise outdoor cat
-        return f"{base} - {color}, {status}" 
+        return f"{base} - {color}, {status}"
+    
+    def __str__(self):
+        """String representation"""
+        return f"{self.name} - {self.color}: {self.age} year(s) old"
 
+class Bird(Animal):
+    """A bird in the shelter"""
+
+    def __init__(self, name, age, breed, can_talk=False):
+        """
+        Initialize a bird.
+        
+        Args:
+            name: Bird's name
+            age: Age in years
+            breed: Bird breed (e.g., "Golden Retriever")
+            can_talk: Whether the bird can talk or not
+        """
+        super().__init__(name, age, "Bird")
+        self.breed = breed
+        self.can_talk = can_talk
+
+    def speak(self):
+        """Birds caw or hello if able to talk"""
+        return f"{self.name} says Hello!" if self.can_talk else "{self.name} says Caw! Caw!"
+    
+    def perch(self):
+        """Birds perch on things"""
+        return f"{self.name} is perching"
+    
+    def describe(self):
+        """Override to include breed and if it can talk or not"""
+        base = super().describe()   # get base description
+        breed = self.breed
+        talks = "can speak" if self.can_talk else "only caws"
+        return f"{base} - {breed}, {talks}"
+
+    def __str__(self):
+        """String representation"""
+        return f"{self.name} - {self.breed}: {self.age} year(s) old"
 
 # =============================================================================
 # Task 3: Specialized Classes
@@ -168,6 +211,10 @@ class Puppy(Dog):
         status = "adopted" if self._adopted else "available"
         return f"{self.name} is a {self.age_months}-month-old {self.breed} puppy ({status})"
 
+    def __str__(self):
+        """String representation"""
+        return f"{self.name} - {self.breed}: {self.age_months} month(s) old"
+
 
 class ServiceDog(Dog):
     """A trained service dog."""
@@ -197,6 +244,10 @@ class ServiceDog(Dog):
         # DONE: Get base description and add service type
         base = super().describe()
         return f"{base}, {self.service_type} dog"
+
+    def __str__(self):
+        """String representation"""
+        return f"{self.name} - {self.breed} {self.service_type} dog: {self.age} year(s) old"
 
 
 class Kitten(Cat):
@@ -229,6 +280,9 @@ class Kitten(Cat):
         status = "adopted" if self._adopted else "available"
         return f"{self.name} is a {self.age_months}-month-old {self.color} kitten ({status})"
 
+    def __str__(self):
+        """String representation"""
+        return f"{self.name} - {self.color}: {self.age_months} month(s) old"
 
 # =============================================================================
 # Task 4: The Shelter Class
@@ -269,7 +323,7 @@ class Shelter:
         print(f"\n--- {self.name}'s animals up for adoption ---")
         available = self.list_available()
         for animal in available:
-            print(f"  {animal.name} - {animal.species}")
+            print(f"  {animal}")
 
     def list_by_species(self, species):
         """List all animals of a specific species."""
@@ -284,7 +338,7 @@ class Shelter:
         print(f"\n--- {self.name}'s {species}s ---")
         list = self.list_by_species(species)
         for animal in list:
-            print(f"  {animal.name}")
+            print(f"  {animal}")
     
     def adopt_animal(self, name):
         """Adopt an animal by name."""
@@ -351,6 +405,8 @@ def main():
     shelter.add_animal(ServiceDog("Old boi", 10, "German Shepard", "guide"))
     # DONE: Add a Kitten
     shelter.add_animal(Kitten("da bb", 4, "Gray"))
+    # Add a Bird
+    shelter.add_animal(Bird("Dog", 5, "Parrot", True))
     
     # Display all animals
     shelter.display_all()
@@ -375,8 +431,10 @@ def main():
 
     # Testing functionality
     print()
-    shelter.print_available()
-    shelter.print_by_species("Cat")
+    print(shelter.list_available()) # prints the list that has the different objects of the classes' addresses
+    shelter.print_available()   # prints out the shelter's available animals for adoption
+    print(shelter.list_by_species("Cat")) # prints the list that has the different objects of the classes' addresses
+    shelter.print_by_species("Cat")  # prints out the shelter's cats/kittens
 
 if __name__ == "__main__":
     main()
