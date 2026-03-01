@@ -258,17 +258,33 @@ class Shelter:
     
     def list_available(self):
         """List all animals available for adoption."""
-        # TODO: Return list of animals where is_adopted() is False
-        available = [] # list to hold available animals for adoption
+        # DONE: Return list of animals where is_adopted() is False
+        available = []
         for animal in self.animals:
             if animal.is_adopted() == False:
-                available.append(animal)
-        return available
+                available.append(animal)    # adds animal if it is able to be adopted
+        return available    # return list of available adoptable animals
     
+    def print_available(self): # function to print the available animals for adoption
+        print(f"\n--- {self.name}'s animals up for adoption ---")
+        available = self.list_available()
+        for animal in available:
+            print(f"  {animal.name} - {animal.species}")
+
     def list_by_species(self, species):
         """List all animals of a specific species."""
-        # TODO: Filter self.animals by species
-        pass
+        # DONE: Filter self.animals by species
+        list = []
+        for animal in self.animals:
+            if animal.species == species:
+                list.append(animal)  # adds animal if matching the given species
+        return list # return list of animals that match the given species
+    
+    def print_by_species(self, species): # function to print the animals by the given species
+        print(f"\n--- {self.name}'s {species}s ---")
+        list = self.list_by_species(species)
+        for animal in list:
+            print(f"  {animal.name}")
     
     def adopt_animal(self, name):
         """Adopt an animal by name."""
@@ -309,6 +325,10 @@ class Shelter:
         for i, animal in enumerate(self.animals, 1):
             print(f"{i}. {animal.describe()}")
         print(f"{'='*50}")
+
+    def __str__(self):
+        """String representation."""
+        return f"Welcome to the {self.name}!"
 
 
 # =============================================================================
@@ -354,10 +374,9 @@ def main():
     print(f"  By Species: {stats['by_species']}")
 
     # Testing functionality
-    list = shelter.list_available()
-    print(list)
-    
-
+    print()
+    shelter.print_available()
+    shelter.print_by_species("Cat")
 
 if __name__ == "__main__":
     main()
