@@ -11,7 +11,7 @@ def validate_date(date_string, logger, date_format='%Y-%m-%d'):
         datetime.strptime(date_string, date_format)
         return True
     except ValueError as e:
-        logger.error("Invalid date", e)
+        logger.error("Invalid date")
         raise InvalidDataError("Invalid date format/date")
 
 def validate_quantity(quantity, logger):
@@ -20,7 +20,7 @@ def validate_quantity(quantity, logger):
         logger.error("Not an integer", InvalidDataError)
         raise InvalidDataError("Quantity must be integer")
     if quantity <= 0:   # failed, given negative integer
-        logger.error("Negative integer given", InvalidDataError)
+        logger.error("Negative integer given")
         raise InvalidDataError("Quantity must be a positive integer")
     return quantity     # valid quantity
 
@@ -49,11 +49,13 @@ def validate_sales_record(record, line_number):
     """
     logger = setup_logger(__name__)
     logger.info(f"validate_sales_record started at line {line_number}")
-    required_fields = ['date', 'store_id', 'product', 'quantity', 'price']      # check has all fields
-    missing = [f for f in required_fields if f not in record or record[f] is None or str(record[f]).strip() == '']
-    if missing:
-        raise MissingFieldError(f"Line {line_number}: Missing required field")
     errors = []
+    required_fields = ['date', 'store_id', 'product', 'quantity', 'price']      # check has all fields
+    missing = [field for field in required_fields if field not in record or record[field] is None or str(record[field]).strip() == '']  # checks records for missing required fields
+    if missing:
+        errors.append(f"missing field: {missing}")
+        logger.error(f"Line {line_number}: missing field {missing}")
+        raise MissingFieldError(f"Line {line_number}: Missing required field")
     try:    # validate date
         validate_date(record['date'], logger)
     except InvalidDataError as e:
