@@ -41,16 +41,26 @@ def clean_data(df):
     - Standardize text columns (strip whitespace, consistent case)
     - Add calculated columns: 'total_amount' = quantity * unit_price
     """
-    df_cleaned = df.drop_duplicates()      # drop duplicates
-    df_cleaned = df_cleaned.dropna(how='all')        # drop all rows with all missing values
-    df_cleaned['order_id'] = df['order_id'].fillna("N/A")   # fill missing values with default of NA
-    df_cleaned['customer_id'] = df['customer_id'].fillna("N/A")
-    df_cleaned['product_name'] = df['product_name'].fillna("N/A")
-    df_cleaned['category'] = df['category'].fillna("N/A")
-    df_cleaned['quantity'] = df['quantity'].fillna(0)           # fill missing values with default of 0
-    df_cleaned['unit_price'] = df['unit_price'].fillna(0)
-    df_cleaned['region'] = df['region'].fillna("N/A")
+    df_cleaned = df.copy()  # copy data to not overwrite starting data
+
+    df_cleaned = df_cleaned.drop_duplicates()      # drop duplicates
+    df_cleaned = df_cleaned.dropna(how='all')        # drop rows with all missing values
+    df_cleaned['order_id'] = df_cleaned['order_id'].fillna("N/A")   # fill missing values with default of NA
+    df_cleaned['customer_id'] = df_cleaned['customer_id'].fillna("N/A")
+    df_cleaned['product_name'] = df_cleaned['product_name'].fillna("N/A")
+    df_cleaned['category'] = df_cleaned['category'].fillna("N/A")
+    df_cleaned['quantity'] = df_cleaned['quantity'].fillna(0)           # fill missing values with default of 0
+    df_cleaned['unit_price'] = df_cleaned['unit_price'].fillna(0)
+    df_cleaned['region'] = df_cleaned['region'].fillna("N/A")
     df_cleaned = df_cleaned.dropna()                            # drop rows if any missing values were not filled
+    
+    text_cols = ['order_id', 'customer_id', 'product_name', 'category', 'region']   # standardize text columns: strip whitespace, all lowercase
+    for col in text_cols:
+        df_cleaned[col] = df_cleaned[col].astype(str).str.strip().str.lower()
+
+    df_cleaned['order_date'] = pd.to_datetime(df_cleaned['order_date']) # standardize date
+    df_cleaned['total_amount'] = df_cleaned['quantity'] * df_cleaned['unit_price']
+
     return df_cleaned
 
 cleaned = clean_data(df)
@@ -67,9 +77,12 @@ def add_time_features(df):
     - quarter
     - is_weekend (boolean)
     """
-    df['order_date'] = df.DataFrame({'order_date': pd.to_datetime([df['order_date']])})
-    df['day_name'] = df['order_date'].dt.day_name()
-    return df
+    new_df = df.copy()
+    new_df['day_of week'] = new_df['order_date'].dt.dayofweek
+    new_df['month'] = new_df['order_date'].dt.month
+    new_df['quarter'] = new_df['order_date'].dt.quarter
+    new_df['is_weekend'] = (new_df['order_date'].dt.dayofweek >= 5)
+    return new_df
 
 print()
 time = add_time_features(cleaned)
