@@ -39,7 +39,7 @@ def clean_data(df):
     - Remove duplicates
     - Fill or drop missing values (document your strategy)
     - Standardize text columns (strip whitespace, consistent case)
-    - Add calculated columns: 'total_amount' = quantity * unit_price
+    - Add calculated columns: 'total_sales' = quantity * unit_price
     """
     df_cleaned = df.copy()  # copy data to not overwrite starting data
 
@@ -53,13 +53,16 @@ def clean_data(df):
     df_cleaned['unit_price'] = df_cleaned['unit_price'].fillna(0)
     df_cleaned['region'] = df_cleaned['region'].fillna("N/A")
     df_cleaned = df_cleaned.dropna()                            # drop rows if any missing values were not filled
-    
+
     text_cols = ['order_id', 'customer_id', 'product_name', 'category', 'region']   # standardize text columns: strip whitespace, all lowercase
     for col in text_cols:
         df_cleaned[col] = df_cleaned[col].astype(str).str.strip().str.lower()
 
     df_cleaned['order_date'] = pd.to_datetime(df_cleaned['order_date']) # standardize date
-    df_cleaned['total_amount'] = df_cleaned['quantity'] * df_cleaned['unit_price']
+    df_cleaned['quantity'] = df_cleaned['quantity'].astype(int)         # standardize quantity
+    df_cleaned['unit_price'] = df_cleaned['unit_price'].astype(float)   # standardize unit price
+    
+    df_cleaned['total_sales'] = df_cleaned['quantity'] * df_cleaned['unit_price']  # create total_sales column
 
     return df_cleaned
 
@@ -94,7 +97,10 @@ def sales_by_category(df):
     Returns: DataFrame with columns [category, total_sales, order_count, avg_order_value]
     Sorted by total_sales descending.
     """
-    pass
+    df_sales_by_category = df.groupby("category")
+    return df_sales_by_category
+
+print(sales_by_category(cleaned))
 
 def sales_by_region(df):
     """
