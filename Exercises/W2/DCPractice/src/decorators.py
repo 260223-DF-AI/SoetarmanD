@@ -1,4 +1,4 @@
-from functools import wraps
+from functools import wraps, cache
 import time
 import logging
 
@@ -88,7 +88,7 @@ def retry(max_attempts=3, delay=1, exceptions=(Exception,)):
         return wrapper
     return decorator
 
-def cache(max_size=128):
+def cache2(max_size=128):
     """
     Cache function results.
     Similar to lru_cache but with visible cache inspection.
@@ -105,5 +105,15 @@ def cache(max_size=128):
         expensive_computation.cache_info()
         expensive_computation.cache_clear()
     """
-    pass
-        
+    @cache
+    def decorator(func):
+        cached_results = {}
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            if args in cached_results:
+                return cached_results[args]
+            result = func(*args)
+            cached_results[args] = result
+            return result
+        return wrapper
+    return decorator
