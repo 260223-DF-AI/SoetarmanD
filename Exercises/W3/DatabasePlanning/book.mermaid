@@ -1,0 +1,74 @@
+erDiagram
+    %% BookBuddy ERD Template
+    %% Fill in the entities, attributes, and relationships
+    
+    %% Example entity format:
+    %% ENTITY {
+    %%     datatype attribute_name PK "description"
+    %%     datatype attribute_name FK
+    %%     datatype attribute_name
+    %% }
+    
+    %% Example relationship format:
+    %% ENTITY1 ||--o{ ENTITY2 : "relationship_name"
+    %% 
+    %% Cardinality notation:
+    %% ||  = exactly one
+    %% |o  = zero or one
+    %% }|  = one or more
+    %% }o  = zero or more
+    
+    %% YOUR ERD BELOW:
+
+    CUSTOMERS {
+        int customer_id (PK)
+        VARCHAR name
+        VARCHAR email
+        VARCHAR phone_number
+        VARCHAR address
+    }
+
+    BOOKS {
+        VARCHAR title
+        int ISBN (PK)
+        float price
+        date publication_date
+        int page_count
+        int publisher_id (FK)
+    }
+
+    PUBLISHER {
+        int publisher_id PK
+        VARCHAR name
+        VARCHAR email
+        VARCHAR phone_number
+    }
+
+    AUTHORS {
+        VARCHAR name
+        int ISBN (FK)
+    }
+
+    ORDERS {
+        int order_id (PK)
+        VARCHAR status
+        int quantity
+        int ISBN (FK)
+        int customer_id (FK)
+    }
+
+    REVIEWS {
+        int customer_id (FK)
+        int ISBN (FK)
+        int rating
+        VARCHAR text
+    }
+
+    Publisher → Books: ONE-TO-MANY (1:M)
+    - One publisher has many books
+    - A book must have one publisher
+    - No junction table needed
+
+    Books → Authors: ONE-TO-MANY (1:M)
+    - One book has one or many authors
+    - A book must have on author
