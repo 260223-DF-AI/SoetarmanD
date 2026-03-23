@@ -30,61 +30,104 @@ select * from actor where first_name = 'John';
 
 -- BASIC CHALLENGES
 -- List all customers (full name, customer id, and country) who are not in the USA
-SELECT first_name, last_name, customer_id, country FROM customer
+SELECT first_name || ' ' || last_name as full_name, customer_id, country FROM customer
 WHERE country != 'USA';
 
 -- List all customers from Brazil
-SELECT first_name, last_name, customer_id, country FROM customer
+SELECT first_name || ' ' || last_name as full_name, customer_id, country FROM customer
 WHERE country = 'Brazil';
 
 -- List all sales agents
-
+SELECT concat(first_name, ' ', last_name) as full_name, employee_id, title FROM employee
+WHERE title like 'Sales%';
 
 -- Retrieve a list of all countries in billing addresses on invoices
-
+SELECT DISTINCT billing_country FROM invoice;   -- only showing distinct values
 
 -- Retrieve how many invoices there were in 2009, and what was the sales total for that year?
+SELECT COUNT(*), SUM(total) FROM invoice
+WHERE invoice_date >= '2009-01-01' AND invoice_date < '2010-01-01'
 
+-- What table has the info I need?
+-- What specifically from the table has the data I need?
+-- How do we filter out the things I DON'T care about?
+-- How do I SELECT/present the data that I have left?
 
 -- (challenge: find the invoice count sales total for every year using one query)
-
+SELECT COUNT(*), SUM(total), EXTRACT(YEAR FROM invoice_date) FROM invoice
+GROUP BY EXTRACT(YEAR FROM invoice_date);
 
 -- how many line items were there for invoice #37
-
+SELECT COUNT(*) FROM invoice_line
+WHERE invoice_id = 37;
 
 -- how many invoices per country? BillingCountry  # of invoices -
 -- Retrieve the total sales per country, ordered by the highest total sales first.
-
-
+SELECT billing_country, COUNT(billing_country) as num_invoices, SUM(total)
+FROM invoice
+GROUP BY billing_country
+ORDER BY SUM(total) DESC;
 
 -- JOINS CHALLENGES
 -- Every Album by Artist
-
+SELECT a.title AS album_name, ar.name AS artist_name 
+FROM album a
+JOIN artist ar
+ON a.artist_id = ar.artist_id;
 
 -- (inner keyword is optional for inner join)
 -- All songs of the rock genre
-
+SELECT t.name AS song_name, g.name AS genre_name
+FROM track t
+JOIN genre g ON t.genre_id = g.genre_id
+WHERE g.name = 'Rock';
 
 -- Show all invoices of customers from brazil (mailing address not billing)
-
+SELECT invoice.invoice_id, invoice.customer_id, invoice.invoice_date, invoice.total, customer.country
+FROM customer
+JOIN invoice ON customer.customer_id = invoice.customer_id
+WHERE customer.country = 'Brazil';
 
 -- Show all invoices together with the name of the sales agent for each one
-
+SELECT invoice.invoice_date, invoice.total, employee.first_name, employee.last_name
+FROM customer
+JOIN invoice ON customer.customer_id = invoice.customer_id
+JOIN employee ON customer.support_rep_id = employee.employee_id;
 
 -- Which sales agent made the most sales in 2009?
-
+SELECT e.first_name
+FROM invoice i
+JOIN customer c ON i.customer_id = c.customer_id
+JOIN employee e ON e.employee_id = c.support_rep_id
+WHERE EXTRACT(YEAR FROM i.invoice_date) = 2009
+GROUP BY e.employee_id
+LIMIT 1;
 
 -- How many customers are assigned to each sales agent?
-
+SELECT COUNT(*) AS customer_count, e.first_name || ' ' || e.last_name AS agent_name
+FROM customer c
+JOIN employee e ON e.employee_id = c.support_rep_id
+GROUP BY e.employee_id;
 
 -- Which track was purchased the most in 2010?
-
+SELECT track.name, SUM(invoice_line.quantity) AS total_sold
+FROM track
+JOIN invoice_line ON track.track_id = invoice_line.track_id
+JOIN invoice ON invoice.invoice_id = invoice_line.invoice_id
+WHERE EXTRACT(YEAR FROM invoice.invoice_date) = 2010
+GROUP BY track.name
+ORDER BY SUM(invoice_line.quantity) DESC, track.name ASC
+LIMIT 1;
 
 -- Show the top three best selling artists.
 
 
 -- Which customers have the same initials as at least one other customer?
-
+SELECT concat(c.first_name, ' ', c.last_name) as full_name, concat(c1.first_name, ' ', c1.last_name) as other_name
+FROM customer as c
+JOIN customer as c1
+ON left(c.first_name, 1) || left(c.last_name, 1) = left(c1.first_name, 1) || left(c1.last_name, 1) 
+and c.customer_id <> c1.customer_id;
 
 -- Which countries have the most invoices?
 
