@@ -1,0 +1,51 @@
+order_id,customer_name,email,order_date,amount,status
+1,,customer1@example.com,2026-03-25,80.59348511102603,completed
+2,,customer2@example.com,2026-03-25,38.95425964140541,completed
+3,,customer3@example.com,2026-03-25,64.87356481976366,pending
+4,Customer 4,customer4@example.com,2026-03-25,32.8202265467821,pending
+5,Customer 5,customer5@example.com,2026-03-25,51.918138868098495,cancelled
+6,Customer 6,customer6@example.com,2026-03-25,-7.726379432882158,completed
+7,Customer 7,customer7@example.com,2026-03-25,-35.162745067988574,completed
+8,Customer 8,customer8@example.com,2026-03-25,6.409934736263667,cancelled
+9,Customer 9,invalid_email,2026-03-25,96.11777898375723,pending
+10,Customer 10,customer10@example.com,2023-01-01,70.04793696098474,pending
+11,Customer 11,customer11@example.com,2026-03-25,53.65851768622634,invalid_status
+12,Customer 12,customer12@example.com,2026-03-25,18.85753048111051,cancelled
+13,Customer 13,customer13@example.com,2026-03-25,3.9405904262536207,cancelled
+14,Customer 14,customer14@example.com,2026-03-25,89.20290752901487,cancelled
+15,Customer 15,customer15@example.com,2026-03-25,11.952344089993439,completed
+16,Customer 16,customer16@example.com,2026-03-25,36.83836609690784,pending
+17,Customer 17,customer17@example.com,2026-03-25,31.5835979438615,completed
+18,Customer 18,customer18@example.com,2026-03-25,60.45995574064064,completed
+19,Customer 19,customer19@example.com,2026-03-25,55.40745355911806,pending
+20,Customer 20,customer20@example.com,2026-03-25,38.65474932378387,cancelled
+21,Customer 21,customer21@example.com,2026-03-25,86.42084115503481,completed
+22,Customer 22,customer22@example.com,2026-03-25,45.24626053617301,cancelled
+23,Customer 23,customer23@example.com,2026-03-25,95.93985901962051,completed
+24,Customer 24,customer24@example.com,2026-03-25,17.151077395308622,pending
+25,Customer 25,customer25@example.com,2026-03-25,59.27188737745725,cancelled
+26,Customer 26,customer26@example.com,2026-03-25,42.94141025937901,pending
+27,Customer 27,customer27@example.com,2026-03-25,75.48680873263994,pending
+28,Customer 28,customer28@example.com,2026-03-25,59.754576352017,cancelled
+29,Customer 29,customer29@example.com,2026-03-25,61.95009824402034,cancelled
+30,Customer 30,customer30@example.com,2026-03-25,61.523319757687354,completed
+31,Customer 31,customer31@example.com,2026-03-25,43.668757505298984,cancelled
+32,Customer 32,customer32@example.com,2026-03-25,81.2638333790888,completed
+33,Customer 33,customer33@example.com,2026-03-25,4.102045628512707,completed
+34,Customer 34,customer34@example.com,2026-03-25,69.35774565865896,cancelled
+35,Customer 35,customer35@example.com,2026-03-25,35.02197163239007,completed
+36,Customer 36,customer36@example.com,2026-03-25,20.875164114818958,pending
+37,Customer 37,customer37@example.com,2026-03-25,62.10330558139921,pending
+38,Customer 38,customer38@example.com,2026-03-25,99.39430228025012,pending
+39,Customer 39,customer39@example.com,2026-03-25,87.76367216978686,cancelled
+40,Customer 40,customer40@example.com,2026-03-25,67.23123219891482,completed
+41,Customer 41,customer41@example.com,2026-03-25,49.551477815032605,pending
+42,Customer 42,customer42@example.com,2026-03-25,89.50675997783063,completed
+43,Customer 43,customer43@example.com,2026-03-25,72.15121981311971,cancelled
+44,Customer 44,customer44@example.com,2026-03-25,90.7520646118304,completed
+45,Customer 45,customer45@example.com,2026-03-25,77.29415570553039,cancelled
+46,Customer 46,customer46@example.com,2026-03-25,63.260726167641515,pending
+47,Customer 47,customer47@example.com,2026-03-25,95.7768780480587,completed
+48,Customer 48,customer48@example.com,2026-03-25,69.931101888752,cancelled
+49,Customer 49,customer49@example.com,2026-03-25,75.19953884141148,cancelled
+50,Customer 50,customer50@example.com,2026-03-25,9.241266944671223,cancelled
