@@ -47,7 +47,7 @@ def train_classifier():
         
         # --- THE 5 STEPS OF TRAINING ---
         # 1. Forward pass
-        predictions = model(x)
+        predictions = model(X)
         
         # 2. Compute Loss
         loss = criterion(predictions, y)
@@ -64,7 +64,7 @@ def train_classifier():
         
         # --- SCHEDULER STEP ---
         # TODO: Step the scheduler
-        
+        scheduler.step()
         
         
         if (epoch + 1) % 20 == 0:
